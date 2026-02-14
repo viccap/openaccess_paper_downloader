@@ -2,12 +2,14 @@ services:
   - type: web
     name: doi-downloader-api
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers python3 -m playwright install chromium
     startCommand: python3 download_papers_doi.py --serve --host 0.0.0.0 --port $PORT --job-retention-seconds $DOI_JOB_RETENTION_SECONDS
     healthCheckPath: /api/health
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.10
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: .playwright-browsers
       - key: DOI_JOB_RETENTION_SECONDS
         value: "900"
       - key: DOI_POST_DOWNLOAD_RETENTION_SECONDS

@@ -1,2 +1,1 @@
-# No mandatory third-party runtime dependencies for API mode.
-# Keep this file for platform build compatibility.
+playwright>=1.58.0,<2

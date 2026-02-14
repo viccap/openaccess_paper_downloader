@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: doi-downloader-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 download_papers_doi.py --serve --host 0.0.0.0 --port $PORT --job-retention-seconds $DOI_JOB_RETENTION_SECONDS
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.10
+      - key: DOI_JOB_RETENTION_SECONDS
+        value: "900"
+      - key: DOI_POST_DOWNLOAD_RETENTION_SECONDS
+        value: "1200"
+      - key: DOI_MAX_JOB_ROWS
+        value: "50000"
+      - key: DOI_ESTIMATED_PDF_SIZE_BYTES
+        value: "2097152"
+      - key: DOI_MAX_ESTIMATED_JOB_BYTES
+        value: "8589934592"
+      - key: DOI_ZIP_PART_MAX_FILES
+        value: "200"
+      - key: DOI_ZIP_PART_MAX_BYTES
+        value: "629145600"
+
+  - type: web
+    name: doi-downloader-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: doi-downloader-api
+          envVarKey: RENDER_EXTERNAL_URL

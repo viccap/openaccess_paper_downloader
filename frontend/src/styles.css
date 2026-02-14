@@ -1,0 +1,248 @@
+:root {
+  color-scheme: light;
+  --bg: #f5f8fb;
+  --surface: #ffffff;
+  --border: #d6dde5;
+  --text: #1f2933;
+  --muted: #5a6876;
+  --primary: #0e7490;
+  --primary-strong: #0b5a70;
+  --danger-bg: #fff0f0;
+  --danger-text: #8a1020;
+  --danger-border: #f3b0b8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #eef4f8 0%, var(--bg) 100%);
+  color: var(--text);
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+.app-shell {
+  width: min(1100px, 94vw);
+  margin: 24px auto 40px;
+  display: grid;
+  gap: 16px;
+}
+
+.app-header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.app-header h1 {
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.card h2 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: border-color 0.16s ease;
+}
+
+.dropzone.dragging {
+  border-color: var(--primary);
+}
+
+.dropzone input[type="file"] {
+  display: none;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  background: #ffffff;
+  color: var(--primary);
+}
+
+.danger-btn {
+  background: #b42318;
+  border-color: #b42318;
+  margin-top: 8px;
+}
+
+.danger-btn:hover:not(:disabled) {
+  background: #8f1b13;
+  border-color: #8f1b13;
+}
+
+.mapping-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.mapping-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+select,
+input[type="number"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  background: #ffffff;
+  color: var(--text);
+}
+
+.secondary {
+  color: var(--muted);
+  margin: 8px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.stats-grid > div {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  background: #f9fbfd;
+}
+
+.metric-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin-bottom: 4px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--border);
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f2f6fa;
+  font-weight: 600;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.row-invalid {
+  background: var(--danger-bg);
+}
+
+.table-empty {
+  color: var(--muted);
+}
+
+.progress-track {
+  height: 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  background: #edf2f7;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #0e7490, #0f9cb6);
+  transition: width 0.25s ease;
+}
+
+.summary-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.error-text {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--danger-border);
+  border-radius: 8px;
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  white-space: pre-wrap;
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    margin: 14px auto 28px;
+    width: min(98vw, 740px);
+  }
+
+  .card,
+  .app-header {
+    padding: 12px;
+  }
+}

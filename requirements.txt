@@ -1,0 +1,2 @@
+# No mandatory third-party runtime dependencies for API mode.
+# Keep this file for platform build compatibility.

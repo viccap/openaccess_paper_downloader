@@ -874,10 +874,52 @@ def render_html_to_pdf_playwright(
     tmp_path = make_temp_pdf_path(destination.parent)
     try:
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch()
+            launch_attempts = [
+                {},
+                {
+                    "args": [
+                        "--no-sandbox",
+                        "--disable-setuid-sandbox",
+                        "--disable-dev-shm-usage",
+                    ]
+                },
+            ]
+            browser = None
+            launch_errors: list[str] = []
+            for launch_options in launch_attempts:
+                try:
+                    browser = playwright.chromium.launch(**launch_options)
+                    break
+                except Exception as exc:  # noqa: BLE001
+                    launch_errors.append(str(exc))
+
+            if browser is None:
+                return (
+                    False,
+                    "playwright failed to launch chromium "
+                    f"({'; '.join(launch_errors)})",
+                )
+
             try:
                 page = browser.new_page()
-                page.goto(url, wait_until="networkidle", timeout=timeout * 1000)
+                navigation_error_messages: list[str] = []
+                navigated = False
+                for wait_state in ["networkidle", "load", "domcontentloaded"]:
+                    try:
+                        page.goto(url, wait_until=wait_state, timeout=timeout * 1000)
+                        navigated = True
+                        break
+                    except Exception as exc:  # noqa: BLE001
+                        navigation_error_messages.append(f"{wait_state}: {exc}")
+
+                if not navigated:
+                    return (
+                        False,
+                        "playwright failed to load HTML page "
+                        f"({'; '.join(navigation_error_messages)})",
+                    )
+
+                page.wait_for_timeout(750)
                 page.pdf(path=str(tmp_path), print_background=True, format="A4")
             finally:
                 browser.close()
